@@ -1,0 +1,26 @@
+version: "3"
+services:
+  tpu:
+    image: "troplo/privateuploader:latest"
+    ports:
+      - "34582:34582"
+    volumes:
+      - /var/lib/tpu_server/config:/app/app/config
+      - /var/lib/tpu_server/storage:/app/storage
+      - /var/lib/tpu_server/frontend_build:/app/frontend_build
+    depends_on:
+      - redis
+      - mariadb
+  redis:
+    image: "redis/redis-stack"
+    volumes:
+      - /var/lib/tpu_server/redis:/data
+  mariadb:
+    image: "mariadb:10.6.13"
+    volumes:
+      - /var/lib/tpu_server/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
