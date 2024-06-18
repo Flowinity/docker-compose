@@ -13,12 +13,14 @@ services:
     depends_on:
       - redis
       - mariadb
+
   redis:
     image: "redis/redis-stack"
     volumes:
       - /var/lib/tpu_server/redis:/data
+
   mariadb:
-    image: "mariadb:10.6.13"
+    image: "mariadb:noble"
     volumes:
       - /var/lib/tpu_server/mariadb:/var/lib/mysql
     environment:
@@ -26,3 +28,4 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_AUTO_UPGRADE=1
